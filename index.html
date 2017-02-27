@@ -5,8 +5,48 @@
     <title>Welcome to Firebase Hosting</title>
       <script src='main.js'></script>
         <link rel="stylesheet" href="style.css">
+        <style>
+        body{
+          background: honeydew;
+        }
+        h1{
+          color: blue;
+          font-family: Verdana, Geneva, Tahoma, sans-serif;
+          font-size: 300%;
+          text-align: center;
+        }
+        p1{
+          color: lightskyblue;
+          top: auto;
+          right: 100%;
+        }
+        input[type=text]{
+          
+          width: 25%;
+          box-sizing: border-box;
+          border: 2px solid #ccc;
+          border-radius: 4px;
+          font-size: 16px;
+          background-color: white;
+          background-image: url('searchincon.png');
+          background-repeat: no-repeat;
+          padding: 12px 20px 12px 40px;
+          -webkit-transition: width 0.4s ease-in-out;
+          transition: width 0.4s ease-in-out;
+        }
+
+        input[type=text]:focus {
+          width: 100%;
+        }
+        </style>
   </head>
   <body>
-    I did this thing mum.
+    <h1>Should have been called movies</h1>
+    <p1>Login</p1>
+
+  <form>
+    <input type="text" name="sreach" placeholder="Search..">
+  </form>
+
   </body>
 </html>
