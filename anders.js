@@ -48,7 +48,7 @@ function omdbSearch(){
     console.log(kek);
     $.getJSON(kek).then(function(output){
         console.log(output);
-        document.getElementById('user').innerHTML = output.Plot;
+        document.getElementById('plot').innerHTML = output.Plot;
     });
 }
 
