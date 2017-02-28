@@ -37,3 +37,19 @@ function facebookSignOut() {
     });
 
 }
+
+//want the sreach word + the website, should give us all the information, then create a structure which to show case this information
+
+
+
+function omdbSearch(){
+    var input = document.getElementById('search').value;
+    var kek = 'https://www.omdbapi.com/?t=' +  encodeURI(input);
+    console.log(kek);
+    $.getJSON(kek).then(function(output){
+        console.log(output);
+        document.getElementById('user').innerHTML = output.Plot;
+    });
+}
+
+

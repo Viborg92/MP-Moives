@@ -4,6 +4,10 @@
     <meta charset="utf-8">
     <title>Welcome to Firebase Hosting</title>
     <script src="https://www.gstatic.com/firebasejs/3.6.10/firebase.js"></script>
+    <script
+  src="https://code.jquery.com/jquery-3.1.1.min.js"
+  integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+  crossorigin="anonymous"></script>
       <script src='main.js'></script>
         <script src='rokholm.js'></script>
         <script src='anders.js'></script>
@@ -17,14 +21,15 @@
 
     <button onclick="facebookLogin()">Facebook</button>
     <button onclick="GoogleSignIn()">Google></button>
+    
 
+ 
 
-    <div id="user">
+    <input type="text" name="search" value="" id='search' placeholder="Search..">
+    <button onclick="omdbSearch()"  >Search</button>
+
+       <div id="user">
     </div>
-
-  <form>
-    <input type="text" name="sreach" placeholder="Search..">
-  </form>
 
   </body>
 </html>
