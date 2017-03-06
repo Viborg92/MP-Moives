@@ -41,3 +41,13 @@ function GoogleSignOff() {
         // An error happened.
     });
 }
+
+//----------------------------------------------------------------------------------------------------\\
+/*$(document).ready(function (){
+pageRedirect();
+});*/
+
+/*function pageRedirect() {
+    var x = window.location.replace;
+    document.getElementById(omdbSearch).innerHTML = x;
+}*/

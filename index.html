@@ -17,15 +17,14 @@
   </head>
   <body>
     <h1>Should have been called movies</h1> <button onclick="facebookLogin()">Facebook</button> <button onclick="GoogleSignIn()">Google</button>
-    
+    <form> 
     <input type="text" name="search" value="" id='search' placeholder="Search..">
-    <button onclick="omdbSearch()"  >Search</button>
+    <button onclick="omdbSearch()">Search</button>
+    <input type= "submit">
     <!--Above is the search bar, and the button to Search with--> 
-
     <p>Plot:</p>
        <div id="plot"></div>
     <p>Imdb Rating:</p>
        <div id="imdbRating"></div>
-
   </body>
 </html>
