@@ -41,8 +41,8 @@ function facebookSignOut() {
 //want the sreach word + the website, should give us all the information, then create 
 //a structure which to show case this information
 
-function omdbSearch(){
-    var input = document.getElementById('search').value;
+function omdbSearch(input){
+ //   var input = document.getElementById('search').value;
     //Setting the input we get from the search bar which is located in index.html.
     var combinput = 'https://www.omdbapi.com/?t=' + encodeURI(input) + '&tomatoes=true';
     //Creating a new varraible which is the combination of the input and the API for OMDB
@@ -58,4 +58,17 @@ function omdbSearch(){
     });
 }
 
+
+
+   $(document).ready(function(){
+
+    if(window.location.href.indexOf('search') > -1){
+        
+     console.log('jeg er færdig!');
+     var url = window.location.href;
+     var split = url.split('=');
+
+     omdbSearch(split[1]);
+    }
+   });
 
