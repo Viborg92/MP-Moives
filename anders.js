@@ -14,8 +14,7 @@ function facebookLogin() {
         // The signed-in user info.
         var user = result.user;
         // ...
-        console.log(user.displayName);
-        document.getElementById("user").innerHTML = user.displayName;
+        console.log(user);
     }).catch(function (error) {
         // Handle Errors here.
         var errorCode = error.code;
