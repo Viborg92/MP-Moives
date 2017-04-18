@@ -49,3 +49,10 @@ body {
         font-size: 14px;
         box-shadow: 0 2px 5px 0 rgba(0,0,0,.26);
       }
+      
+ /*<!--The #map section defines the size and the color of the google map API Window-->*/
+      #map {
+        width: 40%;
+        height: 400px;
+      }
+ 

@@ -42,12 +42,6 @@ function GoogleSignOff() {
     });
 }
 
-//----------------------------------------------------------------------------------------------------\\
-/*$(document).ready(function (){
-pageRedirect();
-});*/
+//---------------------------------------------------------------------------------------\\
+// The Google map  API initializer
 
-/*function pageRedirect() {
-    var x = window.location.replace;
-    document.getElementById(omdbSearch).innerHTML = x;
-}*/
