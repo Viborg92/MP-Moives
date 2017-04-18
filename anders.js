@@ -47,8 +47,8 @@ function omdbSearch(input) {
         //Using jquery to gain the information from the api with the combined adress and input
         console.log(output);
         document.getElementById('plot').innerHTML = output.Plot;
-        document.getElementById('imdbRating').innerHTML = output.imdbRating;
-        document.getElementById('tomatoRating').innerHTML = output.tomatoRating;
+        document.getElementById('imdbRating').innerHTML = output.Ratings[0].Value;
+        document.getElementById('tomatoRating').innerHTML = output.Ratings[1].Value;
         document.getElementById('Poster').innerHTML = '<img src="' + output.Poster + '" />';
         //Using a div from index.html to display the plot from the object search on.
     });
@@ -63,10 +63,11 @@ $(document).ready(function () {
     }
 });
 
+/*
 FB.api(
     "video.movie",
     function (response) {
       console.log(response);
     }
 );
-
+*/
