@@ -42,6 +42,38 @@ function GoogleSignOff() {
     });
 }
 
-//---------------------------------------------------------------------------------------\\
-// The Google map  API initializer
+$.getJSON("https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20html%20where%20url%3D'http%3A%2F%2Fwww.kino.dk%2Fbooking%2Fflow%2Fday-step-2%3Fday%3D2017-05-21'%20and%20xpath%3D'%2F%2F*%5B%40id%3D%22block-system-main%22%5D%2Fdiv%2Fdiv%2Fdiv%5B1%5D%2Fdiv%2Fdiv%2Fdiv%5B2%5D'&format=json&diagnostics=true&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys&callback=").then(function (movieNames) {
+    console.log(movieNames);
+    //logs the object with class 'booking-day-two-content clearfix'and its child objects to console. 
+    console.log(getObjects(movieNames, 'class', 'booking-day-two-content clearfix'));
+    //var kinoSearch = "https://www.imdb.com/video/imdb/" + getObjects(trailerput, 'class', 'booking-day-two-content clearfix');
 
+
+        let obj = movieNames.query.results.div.div;
+        let arr = [];
+        for (var i = 0; i < obj.length; i++) {
+            arr[i] = obj[i].h2.a.href;
+            console.log(arr[i]);
+
+            
+        }
+
+    // document.getElementById('href').src = kinoSearch;
+
+        //Using a div from index.html to display the plot from the object search on.
+
+//Loops through the json file to find the class - slate - and then since java does not like "-" we need to to specify it as "[0].a["data-video"]" instead of
+//a.datavideo if there was no "-"
+/*function getObjects(obj, key, val) {
+    var objects = [];
+    for (var i in obj) {
+        if (!obj.hasOwnProperty(i)) continue;
+        if (typeof obj[i] == 'object') {
+            objects = objects.concat(getObjects(obj[i], key, val));
+        } else if (i == key && obj[key] == val) {
+            objects.push(obj);
+        }
+    }
+    return objects;
+}*/
+})
