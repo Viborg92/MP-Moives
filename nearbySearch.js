@@ -1,22 +1,67 @@
 var map;
 var service;
 var infowindow;
+var map, infoWindow;
+
+// Note: This example requires that you consent to location sharing when
+// prompted by your browser. If you see the error "The Geolocation service
+// failed.", it means you probably did not give permission for the browser to
+// locate you.
+
+//sets the posititon to a default location
+function initMap() {
+  map = new google.maps.Map(document.getElementById('map'), {
+    center: { lat: -34.397, lng: 150.644 },
+    zoom: 15
+  });
+  infoWindow = new google.maps.InfoWindow;
+
+  // Try HTML5 geolocation.
+ if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(function (position) {
+      var pos = {
+        latitude: position.coords.latitude,
+        longitude: position.coords.longitude
+      };
+     var latLng = new google.maps.LatLng(pos.latitude,pos.longitude) //Line I added 
+     // console.debug(latLng);
+      infoWindow.setPosition(latLng);
+      infoWindow.setContent('You are here.');
+      infoWindow.open(map);
+      map.setCenter(latLng);
+    }, function () {
+      handleLocationError(true, infoWindow, map.getCenter());
+    });
+  } else {
+    // Browser doesn't support Geolocation
+    handleLocationError(false, infoWindow, map.getCenter());
+  }
+}
+
+function handleLocationError(browserHasGeolocation, infoWindow, latLng) {
+  infoWindow.setPosition(latLng);
+  infoWindow.setContent(browserHasGeolocation ?
+    'Error: The Geolocation service failed.' :
+    'Error: Your browser doesn\'t support geolocation.');
+  infoWindow.open(map);
+}
+
+
+// Google places API starts
 
 function initialize() {
-  //var pyrmont = new google.maps.LatLng(-33.8665433,151.1956316);
- var yourPos = new google.maps.LatLng(pos);
-  
+  //var pyrmont = new google.maps.LatLng(-33.8665433,151.1956316)
 
-  map = new google.maps.Map(document.getElementById('map'), {
-   //center: pyrmont,
-      center: yourPos,
-      zoom: 15
-    });
+  new google.maps.Map(document.getElementById('map'), {
+    //center: pyrmont,
+    center: latLng,
+    zoom: 10
+  });
 
   var request = {
     //location: pyrmont,
-    location: yourPos,
-    radius: '5000',
+    location: latLng,
+    radius: '20000',
     types: ['movie_theater']
   };
 
@@ -32,17 +77,17 @@ function callback(results, status) {
     }
   }
 
- function createMarker(place) {
-        var placeLoc = place.geometry.location;
-        var marker = new google.maps.Marker({
-          map: map,
-          position: place.geometry.location
-        });
+  function createMarker(place) {
+    var placeLoc = place.geometry.location;
+    var marker = new google.maps.Marker({
+      map: map,
+      position: place.geometry.location
+    });
 
-        google.maps.event.addListener(marker, 'click', function() {
-          infowindow.setContent(place.name);
-          infowindow.open(map, this);
-        });
-      }
+    google.maps.event.addListener(marker, 'click', function () {
+      infowindow.setContent(place.name);
+      infowindow.open(map, this);
+    });
+  }
 
 }
