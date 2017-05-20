@@ -1,13 +1,11 @@
 var map;
 var service;
 var infowindow;
-var map, infoWindow;
-
 // Note: This example requires that you consent to location sharing when
 // prompted by your browser. If you see the error "The Geolocation service
 // failed.", it means you probably did not give permission for the browser to
 // locate you.
-
+var latLng;
 //sets the posititon to a default location
 function initMap() {
   map = new google.maps.Map(document.getElementById('map'), {
@@ -35,6 +33,7 @@ function initMap() {
   } else {
     // Browser doesn't support Geolocation
     handleLocationError(false, infoWindow, map.getCenter());
+    initialize();
   }
 }
 
@@ -51,20 +50,21 @@ function handleLocationError(browserHasGeolocation, infoWindow, latLng) {
 
 function initialize() {
   //var pyrmont = new google.maps.LatLng(-33.8665433,151.1956316)
-
-  new google.maps.Map(document.getElementById('map'), {
-    //center: pyrmont,
-    center: latLng,
-    zoom: 10
-  });
-
+console.debug(pos.latitude,pos.longitude);
+var local = latLng;
   var request = {
     //location: pyrmont,
-    location: latLng,
+    location: local,
     radius: '20000',
     types: ['movie_theater']
   };
 
+ new google.maps.Map(map), request, {
+    //center: pyrmont,
+    center: local,
+    zoom: 10
+  };
+ 
   service = new google.maps.places.PlacesService(map);
   service.nearbySearch(request, callback);
 }
@@ -89,5 +89,4 @@ function callback(results, status) {
       infowindow.open(map, this);
     });
   }
-
 }
