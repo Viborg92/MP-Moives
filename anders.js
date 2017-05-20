@@ -40,7 +40,7 @@ function facebookSignOut() {
 function omdbSearch(input) {
     //   var input = document.getElementById('search').value;
     //Setting the input we get from the search bar which is located in index.html.
-    var combinput = 'https://www.omdbapi.com/?t=' + encodeURI(input) + '&plot=full';
+    var combinput = 'https://www.omdbapi.com/?t=' + encodeURI(input) + '&plot=full&apikey=d55929c4';
     //Creating a new varraible which is the combination of the input and the API for OMDB
     console.log(combinput);
     $.getJSON(combinput).then(function (output) {
@@ -85,11 +85,3 @@ $(document).ready(function () {
     }
 });
 
-/*
-FB.api(
-    "video.movie",
-    function (response) {
-      console.log(response);
-    }
-);
-*/
