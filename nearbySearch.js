@@ -15,25 +15,25 @@ function initMap() {
   infoWindow = new google.maps.InfoWindow;
 
   // Try HTML5 geolocation.
- if (navigator.geolocation) {
+  if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(function (position) {
       var pos = {
         latitude: position.coords.latitude,
         longitude: position.coords.longitude
       };
-     var latLng = new google.maps.LatLng(pos.latitude,pos.longitude) //Line I added 
-     // console.debug(latLng);
+      var latLng = new google.maps.LatLng(pos.latitude, pos.longitude) //Line I added 
+      // console.debug(latLng);
       infoWindow.setPosition(latLng);
       infoWindow.setContent('You are here.');
       infoWindow.open(map);
       map.setCenter(latLng);
+      initialize(latLng, map);
     }, function () {
       handleLocationError(true, infoWindow, map.getCenter());
     });
   } else {
     // Browser doesn't support Geolocation
     handleLocationError(false, infoWindow, map.getCenter());
-    initialize();
   }
 }
 
@@ -48,10 +48,9 @@ function handleLocationError(browserHasGeolocation, infoWindow, latLng) {
 
 // Google places API starts
 
-function initialize() {
+function initialize(latLng, map) {
   //var pyrmont = new google.maps.LatLng(-33.8665433,151.1956316)
-console.debug(pos.latitude,pos.longitude);
-var local = latLng;
+  var local = latLng;
   var request = {
     //location: pyrmont,
     location: local,
@@ -59,12 +58,6 @@ var local = latLng;
     types: ['movie_theater']
   };
 
- new google.maps.Map(map), request, {
-    //center: pyrmont,
-    center: local,
-    zoom: 10
-  };
- 
   service = new google.maps.places.PlacesService(map);
   service.nearbySearch(request, callback);
 }
@@ -83,10 +76,12 @@ function callback(results, status) {
       map: map,
       position: place.geometry.location
     });
-
-    google.maps.event.addListener(marker, 'click', function () {
-      infowindow.setContent(place.name);
-      infowindow.open(map, this);
+    
+    let infowindow = new google.maps.InfoWindow({
+      content: place.name
+    });
+    marker.addListener('click', function () {
+      infowindow.open(map, marker);
     });
   }
 }
