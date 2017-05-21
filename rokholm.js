@@ -1,18 +1,5 @@
 function GoogleSignIn() {
     var provider = new firebase.auth.GoogleAuthProvider();
-
-    /* 
-    2.Optional: Specify additional OAuth 2.0 scopes that you want to request from the authentication provider. To add a scope, call addScope. For example:
-    provider.addScope('https://www.googleapis.com/auth/plus.login');
-    See the authentication provider documentation.
-    
-    3.Optional: Specify additional custom OAuth provider parameters that you want to send with the OAuth request. To add a custom parameter, call setCustomParameters on the initialized provider with an object containing the key as specified by the OAuth provider documentation and the corresponding value. For example:
-    provider.setCustomParameters({
-      'login_hint': 'user@example.com'
-    });
-    */
-
-
     firebase.auth().signInWithPopup(provider).then(function (result) {
         // This gives you a Google Access Token. You can use it to access the Google API.
         var token = result.credential.accessToken;
@@ -41,91 +28,66 @@ function GoogleSignOff() {
     });
 }
 
-console.log("works before scrape");
+//waits until window is fully loaded before it continues with the code
 window.onload;
 
+//function that displays a "Looking for movie...." message while its doing the scraping and comparison of Kino movies.
 $( document ).ready(function() {
     document.getElementById('kinoLink').innerHTML = "Looking for movie on Kino.dk...";  
 });
 
+//variables are defined that gets the current year,date,month - to be loaded into the YQL scrape of Kino
+var d = new Date();
+let urlDate = d.getFullYear() +"-" +(d.getUTCMonth()+1) +'-' +d.getDate();
+// debug of the date retrieval in console
+console.log(urlDate);
 
 // Beginning of section that scrapes kino.dk's daily movies list for the different elements.
 //It sends a JSON request to the specified YQL html and with tht Xpath path, and receives the disired objects as JSON
-
-var d = new Date();
-let urlDate = d.getFullYear() +"-" +(d.getUTCMonth()+1) +'-' +d.getDate();
-console.log(urlDate);
-
 $.getJSON("https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20html%20where%20url%3D'http%3A%2F%2Fwww.kino.dk%2Fbooking%2Fflow%2Fday-step-2%3Fday%3D" +urlDate +"'%20and%20xpath%3D'%2F%2F*%5B%40id%3D%22block-system-main%22%5D%2Fdiv%2Fdiv%2Fdiv%5B1%5D%2Fdiv%2Fdiv%2Fdiv%5B2%5D'&format=json&diagnostics=true&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys&callback=").then(function (movieNames) {
-    //Used for debugging, the recieved data. 
-    //console.log(movieNames);
-    //logs the object with class 'booking-day-two-content clearfix'and its child objects to console. 
-    //console.log(getObjects(movieNames, 'class', 'booking-day-two-content clearfix'));
-    //var kinoSearch = "https://www.imdb.com/video/imdb/" + getObjects(trailerput, 'class', 'booking-day-two-content clearfix');
-
     //This block of code cycles through the divs that each contain information about a specific movie.
     //It then gets the href element that we want and saves it in an array, which then can be accessed later.  
     let obj = movieNames.query.results.div.div;
     var arr = [];
     for (let i = 0; i < obj.length; i++) {
         if (obj[i].h2.a != undefined) arr[i] = obj[i].h2.a.href;
-
-        //  console.log(arr[i]);
     }
 
+// Creates array that is used for saving IMDb IDs inside 
     let imdbCodes = [];
     
-    //$.getJSON("https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20html%20where%20url%3D'http%3A%2F%2Fwww.kino.dk"+arr[0]+"'%20and%20xpath%3D'%2F%2F*%5B%40id%3D%22block-system-main%22%5D%2Fdiv%2Fdiv%2Fdiv%5B3%5D%2Fdiv%5B5%5D%2Fdiv%2Fdiv%2Fdiv%2Fdiv%2Fa'&format=json&diagnostics=true&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys&callback=").then(function (kinoImdb){
+//inputs the hrefs from the arr into the YQL scrape request 
     for (let j = 0; j < arr.length; j++) {
+        //YQL scrape request
         let url = "https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20html%20where%20url%3D'http%3A%2F%2Fwww.kino.dk" + encodeURIComponent(arr[j]) + "'&format=json&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys";
         $.getJSON(url).then(function (kinoImdb) {
-            console.log("works after kinoID");
-            let objKINO = getObjects(kinoImdb, 'class', 'panel-pane pane-entity-field pane-node-field-movie-imdb-link');
+           //Gets the objects in 'panel-pane..........-imdb-link'
+           let objKINO = getObjects(kinoImdb, 'class', 'panel-pane pane-entity-field pane-node-field-movie-imdb-link');
+            //Gets objects of 'IMDB' 
             objKINO = getObjects(objKINO, 'content', 'IMDb');
+            //gets the href, but only the part that matches the regex results. 
             if(objKINO.length > 0) {
-            //    console.log(objKINO[0].href);
                 let regexResults = objKINO[0].href.match(/\btt.{7}/g);
                 if(regexResults[0] != undefined){
+                    //Gets the IMDb movie ID stored on the MP-moives website, and stores it in a variable. 
                     let currentMovieIMDBID = document.getElementById('imdbID').innerHTML;
                     imdbCodes[j] = regexResults[0];
+                    //checks if the imdb ID gathered from the kino.dk scrape, matches the one from the mp-moives website. 
+                    //If yes, the link for that movie if currently available on kino.dk, where after it stops looking for matches. 
                     if(regexResults[0] === currentMovieIMDBID){
                         console.log(regexResults[0] +" is equal to " +currentMovieIMDBID);
                         document.getElementById('kinoLink').innerHTML = '<a href="http://www.kino.dk' +arr[j] +'" target="_blank">View movie on Kino.dk</a>';
                         return;
                     }
-
                 }
-                
-               // console.log(objKINO['0'].div.div.div.div.a.href);
             }
-            
-            /* let obj2 = kinoImdb.query.results.
-            
-            a.href;
-             console.log(obj2);
-             console.log("stuff");*/
         });
     }
-
+    //displays the IMDb IDs collected in console 
     console.log(imdbCodes);
-
 });
-/*  if(kinoId == ImdbID) {
 
-   }*/
-
-
-
-// scrape imdb link
-
-// crosscheck imdb link ID with omdb ID 
-
-// document.getElementById('href').src = kinoSearch;
-
-//Using a div from index.html to display the plot from the object search on.
-
-//Loops through the json file to find the class - slate - and then since java does not like "-" we need to to specify it as "[0].a["data-video"]" instead of
-//a.datavideo if there was no "-"
+//Function that loops through the json file to find the specified key and value in a given object. 
 function getObjects(obj, key, val) {
     var objects = [];
     for (var i in obj) {
