@@ -34,11 +34,6 @@ function facebookSignOut() {
 
 }
 
-//want the sreach word + the website, should give us all the information, then create 
-//a structure which to show case this information
-
-
-
 function omdbSearch(input) {
     //   var input = document.getElementById('search').value;
     //Setting the input we get from the search bar which is located in index.html.
@@ -62,7 +57,6 @@ function omdbSearch(input) {
             console.log(getObjects(trailerput, 'class', 'slate'));
             var trailerSearch = "https://www.imdb.com/video/imdb/" + getObjects(trailerput, 'class', 'slate')[0].a["data-video"] + "/imdb/embed?autoplay=false&width=480";
             document.getElementById('trailerFrame').src = trailerSearch;
-        
         });
         //Using a div from index.html to display the plot from the object search on.
     });
