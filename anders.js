@@ -37,6 +37,8 @@ function facebookSignOut() {
 //want the sreach word + the website, should give us all the information, then create 
 //a structure which to show case this information
 
+
+
 function omdbSearch(input) {
     //   var input = document.getElementById('search').value;
     //Setting the input we get from the search bar which is located in index.html.
@@ -46,10 +48,13 @@ function omdbSearch(input) {
     $.getJSON(combinput).then(function (output) {
         //Using jquery to gain the information from the api with the combined adress and input
         console.log(output);
+        window.onload;
         document.getElementById('plot').innerHTML = output.Plot;
         document.getElementById('imdbRating').innerHTML = output.Ratings[0].Value;
         document.getElementById('tomatoRating').innerHTML = output.Ratings[1].Value;
         document.getElementById('Poster').innerHTML = '<img src="' + output.Poster + '" />';
+        document.getElementById('imdbID').innerHTML = output.imdbID;
+        //document.getElementById('runTime').innerHTML = output.Runtime;
         //Using the YQL to scape imdb, using the ID from omdb.
         $.getJSON("https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20html%20where%20url%3D'http%3A%2F%2Fwww.imdb.com%2Ftitle%2F" + output.imdbID + "%2F'&format=json&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys").then(function (trailerput){
             console.log(trailerput);
@@ -57,6 +62,7 @@ function omdbSearch(input) {
             console.log(getObjects(trailerput, 'class', 'slate'));
             var trailerSearch = "https://www.imdb.com/video/imdb/" + getObjects(trailerput, 'class', 'slate')[0].a["data-video"] + "/imdb/embed?autoplay=false&width=480";
             document.getElementById('trailerFrame').src = trailerSearch;
+        
         });
         //Using a div from index.html to display the plot from the object search on.
     });
